@@ -16,13 +16,16 @@ class Spider:
     
     def getContents(self,pageIndex):
         content = self.getPage(pageIndex)
-        groupList = []
+        enteryList = []
+        allList = []
         #if content.span['class'] == 'tag':
         # for child in content.span['class'] == 'tag':
-        for group in content.select('.tag'):
-            groupList.append(group.a.string)
-
-        print(groupList)
+        for groupSpan in content.select('.tag'):
+            enteryList.append(groupSpan.a)
+            enteryList.append(groupSpan.find_next_sibling('a'))
+            enteryList.append(groupSpan.find_next(class_ = "download-arrow arrow-magnet"))
+            allList.append(enteryList)
+        return allList
             
 
 
