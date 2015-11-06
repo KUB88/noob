@@ -29,14 +29,17 @@ class Spider:
         return allList
 
     def writeFile(self,pageIndex,allList):
-        fileName = str(pageIndex) + ".html"
+        fileName = "D:/" + str(pageIndex) + ".html"
         f = open(fileName, "w+")
-        f.write(allList.encode('utf-8'))
+        for entery in  allList
+            for items in entery
+                f.write(items)
+            f.write("/n")
 
     def letsGo(self):
         
         allList = self.getContents(1)
-        self.writeFile(allList)
+        self.writeFile(1, allList)
 
 spider = Spider()
 spider.letsGo()
