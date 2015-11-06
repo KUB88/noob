@@ -2,6 +2,7 @@
 
 import requests
 from bs4 import BeautifulSoup
+import os
 
 #https://share.dmhy.org/topics/list/page/1
 class Spider:
@@ -26,9 +27,24 @@ class Spider:
             enteryList.append(groupSpan.find_next(class_ = "download-arrow arrow-magnet"))
             allList.append(enteryList)
         return allList
+
+    def writeFile(self,pageIndex,allList):
+        fileName = str(pageIndex) + ".html"
+        f = open(fileName, "w+")
+        f.write(allList.encode('utf-8'))
+
+    def letsGo(self):
+        
+        allList = self.getContents(1)
+        self.writeFile(allList)
+
+spider = Spider()
+spider.letsGo()
+
+      
+
             
 
 
-spider = Spider()
-spider.getContents(1)
+
 
