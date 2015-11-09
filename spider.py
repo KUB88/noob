@@ -1,8 +1,9 @@
-#coding: utf-8
+# -*- coding:utf-8 -*-
 
 import requests
 from bs4 import BeautifulSoup
 import os
+import re
 
 #https://share.dmhy.org/topics/list/page/1
 class Spider:
@@ -19,27 +20,32 @@ class Spider:
         content = self.getPage(pageIndex)
         enteryList = []
         allList = []
-        #if content.span['class'] == 'tag':
-        # for child in content.span['class'] == 'tag':
+        dic = {}
         for groupSpan in content.select('.tag'):
-            enteryList.append(groupSpan.a)
-            enteryList.append(groupSpan.find_next_sibling('a'))
-            enteryList.append(groupSpan.find_next(class_ = "download-arrow arrow-magnet"))
-            allList.append(enteryList)
+            pattern = re.compile('href="(magnet.*?)"',re.S)            
+            items = re.findall(pattern,str(groupSpan.find_next(class_ = "download-arrow arrow-magnet")))
+            dic['group'] = groupSpan.a.string.strip()
+            dic['title'] = groupSpan.find_next_sibling('a').string.strip()
+            dic['download'] = items
+            items = []
+            allList.append(dic)
+        print(allList)
         return allList
 
-    def writeFile(self,pageIndex,allList):
-        fileName = "D:/" + str(pageIndex) + ".html"
-        f = open(fileName, "w+")
-        for entery in  allList
-            for items in entery
-                f.write(items)
-            f.write("/n")
+    # def writeFile(self,pageIndex,allList):
+    #     nextLine = '\t'
+    #     fileName = "D:/" + str(pageIndex) + ".txt"
+    #     f = open(fileName, "wb+")
+    #     for entery in  allList:
+    #         for items in entery:
+    #             f.write(items.encode('utf-8'))
+    #         f.write(nextLine.encode('utf-8'))
+    #     f.close()   
 
-    def letsGo(self):
-        
+
+    def letsGo(self):        
         allList = self.getContents(1)
-        self.writeFile(1, allList)
+        #self.writeFile(1, allList)
 
 spider = Spider()
 spider.letsGo()
