@@ -29,7 +29,7 @@ class Spider:
             dic['download'] = items
             items = []
             allList.append(dic)
-        print(allList)
+        # print(allList)
         return allList
 
     # def writeFile(self,pageIndex,allList):
