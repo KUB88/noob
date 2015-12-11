@@ -23,7 +23,7 @@ class weiboLogin:
 
     #预登陆获得 servertime, nonce, pubkey, rsakv
     def getServerData(self):
-        url = 'http://login.sina.com.cn/sso/prelogin.php?entry=weibo&callback=sinaSSOController.preloginCallBack&su=ZW5nbGFuZHNldSU0MDE2My5jb20%3D&rsakt=mod&checkpin=1&client=ssologin.js(v1.4.18)&_=1442991685270'
+        url = 'http://login.sina.com.cn/sso/prelogin.php?entry=weibo&callback=sinaSSOController.preloginCallBack&su=MTg3MDE3NzAzMTM%3D&rsakt=mod&checkpin=1&client=ssologin.js(v1.4.18)&_=1449841204179'
         data = urllib.request.urlopen(url).read().decode('utf-8')
         p = re.compile('\((.*)\)')
         data = p.search(data).group(1)
@@ -56,15 +56,14 @@ class weiboLogin:
     #获取需要提交的表单数据     
     def getFormData(self,userName,password,servertime,nonce,pubkey,rsakv):  
         userName = self.getUsername(userName)  
-        psw = self.getPassword(password,servertime,nonce,pubkey)  
-          
+        psw = self.getPassword(password,servertime,nonce,pubkey)            
         form_data = {  
             'entry':'weibo',  
             'gateway':'1',  
             'from':'',  
             'savestate':'7',  
             'useticket':'1',  
-            'pagerefer':'http://weibo.com/p/1005052679342531/home?from=page_100505&mod=TAB&pids=plc_main',  
+            'ssosimplelogin': '1',  
             'vsnf':'1',  
             'su':userName,  
             'service':'miniblog',  
@@ -80,36 +79,36 @@ class weiboLogin:
             'returntype':'META'  
             }  
         formData = urllib.parse.urlencode(form_data)  
-        return formData
+        return formData.encode()
 
 
     def login(self,username,psw):  
-            self.getCookies()  
-            url = 'http://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.18)'  
-            servertime,nonce,pubkey,rsakv = self.getServerData()  
-            formData = self.getFormData(username,psw,servertime,nonce,pubkey,rsakv)  
-            headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0'}  
-            req  = urllib.request.Request(  
-                    url = url,  
-                    data = formData,  
-                    headers = headers  
-            )  
-            result = urllib.request.urlopen(req.get_full_url()).read() 
-            #text = result.read().encode('utf-8') 
-            print(result.decode('gbk', 'ignore').encode('utf-8'))  
-            #还没完！！！这边有一个重定位网址，包含在脚本中，获取到之后才能真正地登陆  
-            p = re.compile('location\.replace\(\"(.*?)\)\"')  
-            login_url = p.search(result.decode('gbk', 'ignore').encode('utf-8')).group(1)  
+        self.getCookies()  
+        url = 'http://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.18)'  
+        servertime,nonce,pubkey,rsakv = self.getServerData()  
+        formData = self.getFormData(username,psw,servertime,nonce,pubkey,rsakv)  
+        headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0'}  
+        req  = urllib.request.Request(  
+            url = url,  
+            data = formData,  
+            headers = headers,
+            method = 'POST'  
+        ) 
+        #print(req.data) 
+        result = urllib.request.urlopen(req) 
+        #text = result.read().encode('utf-8') 
+        print(result.read())  
+        #还没完！！！这边有一个重定位网址，包含在脚本中，获取到之后才能真正地登陆  
+        p = re.compile('location\.replace\(.(.*).\)')  
+        try:  
+            login_url = p.search(result.decode('GBK')).group(1)  
             print(login_url)
-            try:  
-                    login_url = p.search(text).group(1)  
-                    print(login_url)  
-                    #由于之前的绑定，cookies信息会直接写入  
-                    urllib.request.urlopen(login_url)  
-                    print("Login success!")  
-            except:  
-                    print('Login error!')  
-                    return 0
+            #由于之前的绑定，cookies信息会直接写入  
+            urllib.request.urlopen(login_url)  
+            print("Login success!")  
+        except:  
+            print('Login error!')  
+            return 0
 
 test = weiboLogin()
 
