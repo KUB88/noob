@@ -96,10 +96,11 @@ class weiboLogin:
         ) 
         #print(req.data) 
         result = urllib.request.urlopen(req) 
-        #text = result.read().encode('utf-8') 
-        print(result.read())  
+        print(result.read().decode('gbk'))  
         #还没完！！！这边有一个重定位网址，包含在脚本中，获取到之后才能真正地登陆  
-        p = re.compile('location\.replace\(.(.*).\)')  
+        p = re.compile('replace\(\\\'(.*?)\\\'\)')
+        login_url = p.search(result.read().decode('gbk'))
+        print(login_url)  
         try:  
             login_url = p.search(result.decode('GBK')).group(1)  
             print(login_url)
@@ -108,8 +109,37 @@ class weiboLogin:
             print("Login success!")  
         except:  
             print('Login error!')  
-            return 0
+            # return 0
+
+    def postMsg(self):
+    	 
+    	headers = {'User-Agent':'Mozilla/5.0 (Windows NT 6.3; WOW64; rv:41.0) Gecko/20100101 Firefox/41.0','Referer':'http://weibo.com/u/5108659863/home?topnav=1&wvr=6'}
+    	url = 'http://weibo.com/aj/mblog/add?_wv=5'
+    	formData = {
+    		'location':'v6_content_home',
+    		'appkey':'',
+    		'style_tpye':'1',
+    		'pic_id':'',
+    		'text':'hello chen da cong !',
+    		'pdetail':'',
+    		'rank':'0',
+    		'rankid':'',
+    		'module':'stissue',
+    		'pub_tpye':'dialog',
+    		'_t':'0'
+    		}
+    	formData = urllib.parse.urlencode(formData) 	
+    	req = urllib.request.Request(
+    		url = url,
+    		data = formData.encode(),
+    		headers = headers,
+    		method = 'POST'
+    	)
+    	result= urllib.request.urlopen(req)
+    	print(result.read())
+
 
 test = weiboLogin()
 
 test.login('18701770313', '1914346128')
+#test.postMsg()
