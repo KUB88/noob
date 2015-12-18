@@ -33,8 +33,9 @@ class weiboLogin:
             nonce = json_data['nonce']  
             pubkey = json_data['pubkey']  
             rsakv = json_data['rsakv']
+            pcid = json_data['pcid']
             print(json_data) 
-            return servertime, nonce, pubkey, rsakv  
+            return servertime, nonce, pubkey, rsakv
         except:
             print("get Server Data error")
             return 0
@@ -82,7 +83,6 @@ class weiboLogin:
         formData = urllib.parse.urlencode(form_data)  
         return formData.encode()
 
-
     def login(self,username,psw):  
         self.getCookies()  
         url = 'http://login.sina.com.cn/sso/login.php?client=ssologin.js(v1.4.18)'  
@@ -101,11 +101,10 @@ class weiboLogin:
         print(s)  
         #还没完！！！这边有一个重定位网址，包含在脚本中，获取到之后才能真正地登陆    
         try:  
-            login_url = re.findall("location.replace\(\"(.*?)\"\);" , s)[0]  
+            login_url = re.findall("location.replace\(.(.*?).\);" , s)[0]  
             print(login_url)
             #由于之前的绑定，cookies信息会直接写入  
-            res = urllib.request.urlopen(login_url)
-            print(res.read().decode('gb2312'))  
+            res = urllib.request.urlopen(login_url)  
             print("Login success!")  
         except:  
             print('Login error!')  
@@ -142,4 +141,4 @@ class weiboLogin:
 test = weiboLogin()
 
 test.login('18701770313', '1914346128')
-#test.postMsg()
+test.postMsg()
