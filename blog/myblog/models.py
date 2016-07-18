@@ -9,6 +9,6 @@ class Articles(models.Model):
 	tag = models.CharField(max_length = 150)
 
 class ArticlesAdmin(admin.ModelAdmin):
-	list_display = ('title', 'tag', 'timestamp')
+	list_display = ('title',  'tag', 'timestamp')
 
-admin.site.register(Articles)
+admin.site.register(Articles, ArticlesAdmin)
