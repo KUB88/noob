@@ -18,5 +18,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', 'myblog.views.index'),
+    url(r'^$', 'myblog.views.index', name = 'index'),
+    url(r'(?P<id>\d+)/$', 'myblog.views.detail', name = 'detail')
 ]
