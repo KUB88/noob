@@ -72,6 +72,14 @@
             <h4>About</h4>
             <p>Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
           </div>
+
+        <div class="input-group">
+    <form action="/search/" method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+        </div>
+
           <div class="sidebar-module">
             <h4>Archives</h4>
             <ol class="list-unstyled">
@@ -116,6 +124,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script>window.jQuery || document.write('<script src="{% static "assets/js/vendor/jquery.min.js" %}"><\/script>')</script>
     <script src="{% static "dist/js/bootstrap.min.js" %}"></script>
+    <script src="{% static "dist/js/bootstrap.js" %}"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="{% static "assets/js/ie10-viewport-bug-workaround.js" %}"></script>
   </body>

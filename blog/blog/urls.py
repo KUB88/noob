@@ -19,5 +19,7 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'myblog.views.index', name = 'index'),
-    url(r'(?P<id>\d+)/$', 'myblog.views.detail', name = 'detail')
+    url(r'(?P<id>\d+)/$', 'myblog.views.detail', name = 'detail'),
+    url(r'^search', 'myblog.views.search', name = 'search'),
+    url(r'^meta/$', 'myblog.views.display_meta',name='display_meta')
 ]
