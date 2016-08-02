@@ -14,13 +14,23 @@ def detail(request, id):
         raise Http404
     return render_to_response('post.html', {'post': post})
 
+def archives(request):
+    try:
+        post_list = Articles.objects.all()
+    except Article.DoesNotExist:
+        raise Http404
+    return render(request, 'archives.html', {'post_list': post_list, 'error': False})
+
 def search(request):
     if 'q' in request.GET and request.GET['q']:
         q = request.GET['q']
         results = Articles.objects.filter(title = q)
-        return render_to_response('home.html', {'article_list', results})
+        if len(results) == 0:
+            return render_to_response('archives.html', {'post_list': results, 'error': True})
+        else:
+            return render_to_response('archives.html', {'post_list': results, 'error': False})
     else:
-        return render_to_response('home.html', 'no such result')
+        return redirect('/')
 
 def display_meta(request):
     values = request.META.items()
