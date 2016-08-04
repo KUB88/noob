@@ -1,11 +1,25 @@
 {% extends "base.html" %}
+{% load custom_markdown %}
 {% block content %}
     {% for post in article_list %}
           <div class="blog-post">
             <h2 class="blog-post-title"><a href="{% url "detail" id=post.id %}">{{ post.title }}</a></h2>
             <p class="blog-post-meta">{{ post.timestamp }} by <a href="#">Chris</a></p>
 
-            {{ post.article }}
+            {{ post.article|custom_markdown|truncatewords_html:50 }}
           </div><!-- /.blog-post -->
     {% endfor %}
+{% if article_list.object_list and article_list.paginator.num_pages > 1 %}
+          <nav>
+            <ul class="pager">
+            {% if article_list.has_previous %}
+              <li><a href="?page={{ article_list.previous_page_number }}">Previous</a></li>
+            {% endif %}
+
+            {% if article_list.has_next %}
+              <li><a href="?page={{ article_list.next_page_number }}">Next</a></li>
+            {% endif %}
+            </ul>
+          </nav>
+          {% endif %}
 {% endblock %}

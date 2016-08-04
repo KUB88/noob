@@ -1,11 +1,20 @@
 from django.shortcuts import render, render_to_response
 from myblog.models import Articles
 from django.http import Http404,HttpResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def index(request):
-	article_list = Articles.objects.all()
-	return render_to_response('home.html', {'article_list': article_list})
+    articles = Articles.objects.all()
+    paginator = Paginator(articles,2)
+    page = request.GET.get('page')
+    try :
+        article_list = paginator.page(page)
+    except PageNotAnInteger:
+        article_list = paginator.page(1)
+    except EmptyPage:
+        article_list = paginator.paginator(paginator.num_pages)
+    return render_to_response('home.html', {'article_list': article_list})
 
 def detail(request, id):
     try:
