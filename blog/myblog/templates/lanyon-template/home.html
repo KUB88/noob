@@ -10,7 +10,7 @@
           </div><!-- /.blog-post -->
     {% endfor %}
 {% if article_list.object_list and article_list.paginator.num_pages > 1 %}
-          <nav>
+          <nav id="paginator">
             <ul class="pager">
             {% if article_list.has_previous %}
               <li><a href="?page={{ article_list.previous_page_number }}">Previous</a></li>
