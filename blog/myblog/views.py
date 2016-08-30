@@ -5,8 +5,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def index(request):
-    articles = Articles.objects.all()
-    paginator = Paginator(articles,2)
+    articles = Articles.objects.fileter(status = 'p')
+    paginator = Paginator(articles,5)
     page = request.GET.get('page')
     try :
         article_list = paginator.page(page)
