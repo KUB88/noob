@@ -26,8 +26,8 @@ class Tag(models.Model):
 	
 	class Meta:
 		ordering = ['name']
-        verbose_name = "标签"
-        verbose_name_plural = verbose_name
+		verbose_name = '标签'
+		verbose_name_plural = verbose_name
 
 class ArticlesAdmin(admin.ModelAdmin):
 	list_display = ('title',  'created_time', 'last_mod_time', 'status', 'tag')
