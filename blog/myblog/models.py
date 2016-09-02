@@ -30,10 +30,10 @@ class Tag(models.Model):
 		verbose_name_plural = verbose_name
 
 class ArticlesAdmin(admin.ModelAdmin):
-	list_display = ('title',  'created_time', 'last_mod_time', 'status', 'tag')
+	list_display = ('title',  'created_time', 'last_mod_time', 'status')
 
 class TagAdmin(admin.ModelAdmin):
-	list_display = ('name')
+	list_display = ['name']
 
 admin.site.register(Articles, ArticlesAdmin)
 admin.site.register(Tag, TagAdmin)

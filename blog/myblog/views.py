@@ -5,7 +5,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Create your views here.
 def index(request):
-    articles = Articles.objects.fileter(status = 'p')
+    articles = Articles.objects.filter(status = 'p')
     paginator = Paginator(articles,5)
     page = request.GET.get('page')
     try :
@@ -14,7 +14,7 @@ def index(request):
         article_list = paginator.page(1)
     except EmptyPage:
         article_list = paginator.paginator(paginator.num_pages)
-    return render_to_response('home.html', {'article_list': article_list})
+    return render_to_response('myblog/index.html', {'article_list': article_list})
 
 def detail(request, id):
     try:
